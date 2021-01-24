@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+
+  jenkins-master:
+    build: ./jenkins-master
+    container_name: jenkins-master
+    ports:
+      - 80:8080
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  jenkins-slave:
+    build: ./jenkins-slave
+    container_name: jenkins-slave
+
+volumes:
+  jenkins_home:
+    external: true
