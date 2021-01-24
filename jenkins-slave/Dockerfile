@@ -32,15 +32,16 @@ RUN git config --global user.name "Jenkins"
 RUN mkdir .m2
 COPY secrets/settings.xml .m2/settings.xml
 
+# configure SSH
+RUN mkdir .ssh
+COPY secrets/jenkins-master.pub .ssh/authorized_keys
+RUN ssh-keyscan github.com >> .ssh/known_hosts
+
 # continue as root
 USER root
 
-# configure SSH
-RUN mkdir /var/run/sshd
-RUN mkdir .ssh
-COPY secrets/jenkins-master.pub .ssh/authorized_keys
-
 # start SSH
+RUN mkdir /var/run/sshd
 CMD exec /usr/sbin/sshd -De
 
 # ports
